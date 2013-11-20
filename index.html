@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="ISO-8859-1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="Recipe collection application">
+		<meta name="author" content="Shreeprabha Aggarwal">
+		<!--link rel="shortcut icon" href="favicon.ico"-->
+
+		<title>Theme1</title>
+
+		<link href="css/bootstrap.css" rel="stylesheet">
+		<link href="css/layout.css" rel="stylesheet">
+		<link href="css/font-awesome.css" rel="stylesheet">
+
+		<script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+		<script type="text/javascript" src="js/jquery-ui-1.10.3.custom.js"></script>
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+
+				$('.jumbotron').children().each(function() {
+
+					$(this).fadeOut(0);
+					$(this).css("position", 'absolute');
+
+				});
+
+				$('#home').fadeIn(1000);
+				$('#home').css("position", 'static');
+
+				$(".clear a").click(function() {
+					var x = $(this).attr("href");
+					$('.jumbotron').children().each(function() {
+						$(this).fadeOut(0);
+						$(this).css("position", 'absolute');
+					});
+
+					$(x).fadeIn(1000);
+					$(x).css("visibility", 'visible');
+					$(x).css("position", 'static');
+
+				});
+
+				$(".op > *").hide();
+
+				function updateLinks(link, links) {
+
+					var block = link.attr("data-block");
+					$("a[data-block!='" + block + "']").parent().removeClass("active");
+					$("a[data-block='" + block + "']").parent().addClass("active");
+
+					$(".op > *").hide();
+					$("#" + block).show();
+				}
+
+				var links = $("a[data-block]");
+				if (window.location.hash != "") {
+					var link = $("a[href='" + window.location.hash + "']");
+					if (link.length > 0) {
+						updateLinks(link, links);
+					}
+				}
+
+				links.click(function() {
+					var divId = $(this).attr("href");
+					var state = {
+						prevhash : divId
+					};
+					if (window.history.pushState) {
+						window.history.pushState(state, $(this).html(), divId);
+					}
+
+					updateLinks($(this), links);
+					return false;
+				});
+
+				if (window.history.pushState) {
+					window.onpopstate = function(e) {
+						if (e.state) {
+							var link = $("a[href='" + window.location.hash + "']");
+							updateLinks(link, links);
+						} else {
+							$(".op > *").hide();
+							$("a[data-block]").parent().removeClass("active");
+						}
+					};
+				}
+
+			});
+		</script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="jumbotron">
+				<div id="home" class="row">
+					Theme description. 
+					<div class="span3">
+						<div class="well sidebar-nav">
+							<ul class="nav nav-list">
+								<li class="nav-header">
+									Project
+								</li>
+								<li>
+									<a href="#tab1" data-block="tab1">Tab 1</a>
+								</li>
+								<li>
+									<a href="#tab2" data-block="tab2">Tab 2</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="op span3">
+						<div id="tab1" class="sidebar-container">
+							<h2>Some text or media description</h2>
+						</div>
+						<div id="tab2">
+							<h2>Some other text or media description...</h2>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /container -->
+		<!-- footer -->
+		<footer class="footer">
+			<div class="container">
+				<p>&copy 2013 Design and build by <a href="https://www.facebook.com/shreeprabha.aries">Shreeprabha Aggarwal</a>
+				</p>
+				<p>
+					Code licensed under <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache
+					License v2.0</a>, GitHub source <a href="https://github.com/Shreeprabha/TwitterBootstrapTemplate">GitHub</a>
+				</p>
+			</div>
+		</footer>
+
+		<!-- Bootstrap core JavaScript
+		================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script src="js/jquery-1.9.1.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+	</body>
+</html>
